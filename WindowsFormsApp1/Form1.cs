@@ -8,6 +8,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using WindowsFormsApp1;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Mail;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
@@ -15,6 +19,7 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
 
     {
+         
         private Transport transport = new Transport();
         Coordinate coordinate = new Coordinate();
 
@@ -23,8 +28,12 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-            
+
+            textBoxZeit.Text = DateTime.Now.ToString("HH:mm");
+
+            dateTimePicker.Text = DateTime.Today.ToString();
         }
+
 
 
         private void GetStations(string text, ListBox listBox)
@@ -72,11 +81,11 @@ namespace WindowsFormsApp1
         private void Verbindung_Suchen_Click(object sender, EventArgs e)
         {
             Connections connections = transport.GetConnections(comboBoxVon.Text, comboBoxNach.Text);
-            VerbindungenAnzeigen.Items.Clear();
+            listBoxVonNach.Items.Clear();
             
             foreach (connection connection in connections.ConnectionList)
             {
-                VerbindungenAnzeigen.Items.Add(comboBoxVon.Text + "\t" + comboBoxNach.Text + "\tAbfahrt" + connection.From.Departure + "\tAnkunft" + connection.To.Arrival);
+                listBoxVonNach.Items.Add(comboBoxVon.Text + "\t" + comboBoxNach.Text + "\tAbfahrt" + connection.From.Departure + "\tAnkunft" + connection.To.Arrival);
             }
         }
 
@@ -172,6 +181,9 @@ namespace WindowsFormsApp1
                 {
                     comboBoxVon.Items.Add(station.Name);
                 }
+            listBoxVonNach.Visible = true;
+
+        
         }
 
 
@@ -188,6 +200,7 @@ namespace WindowsFormsApp1
                 {
                     comboBoxNach.Items.Add(station.Name);
                 }
+            listBoxVonNach.Visible = true;
         }
 
  
@@ -202,9 +215,8 @@ namespace WindowsFormsApp1
 
         private void comboBoxStation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetStations(comboBoxStation.Text, listBoxAbfahrtsplan);
+            
         }
-
 
 
 
@@ -230,36 +242,104 @@ namespace WindowsFormsApp1
 
         private void StationsortAnzeigen_Click(object sender, EventArgs e)
         {
-            // wenn man in die textbox geht wird die liste angezeigt
-            listBoxAbfahrtsplan.Visible = true;
-        }
-
-        private void AbfahrtsplanAnzeigen_Click(object sender, EventArgs e)
-        {
-            // fals mann die map noch offen hat wird sie versteckt dass man den fahrplan sieht
-            // Wenn man den knopf Abfahrt gedrückt hat und das feld Von leer lässt kommt die fehler meldung dass man eine station angeben muss.
-            // Wenn man den knopf Abfahrt gedrückt hat und etwas eingegeben hatt wird die tabelle abgerufen
-            if (AbfahrtsplanAnzeigen.Text == string.Empty)
+            GetStations(comboBoxStation.Text, listBoxAbfahrtsplan);
+            /*Wenn Suche nicht nichts drin ist dann soll Programm ausführen
+             wenn das nicht so ist dann MessageBox anzeigen*/
+            if (comboBoxStation.Text != "")
             {
-                MessageBox.Show("Geben sie in die Textboxen von und nach eine Station ein", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                double xcoordinate;
+                //xcoordinate = station.Coordinate.XCoordinate;
+                double ycoordinate;
+                //ycoordinate = station.Coordinate.YCoordinate;
+                string url;
+                url = "https://www.google.ch/maps/place/" + comboBoxStation.Text;
+                webBrowserGM.Navigate(url);
             }
             else
             {
-                Tafel2();
+                MessageBox.Show("Kein Stationsort angegeben!");
             }
         }
 
+
+
+
+
+        private void AbfahrtsplanAnzeigen_Click(object sender, EventArgs e)
+        {
+            List<StationBoard> StationBoardList = transport.GetStationBoard(comboBoxStation.Text, string.Empty).Entries;
+
+            listBoxAbfahrtsplan.Items.Clear();
+
+            foreach (var s in StationBoardList)
+            {
+                if (s.Name != null)
+                {
+                    listBoxAbfahrtsplan.Items.Add("Von: " + comboBoxStation.Text + "        Nach: " + s.To);
+                    listBoxAbfahrtsplan.Items.Add("");
+                }
+            }
+        }
+
+
+
+
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+           
+            
+            
+            
+        }
+
+        private void Verbindung_Suchen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                Verbindung_Suchen.PerformClick();
+            }
+        }
+
+        private void BTN_Email_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("mailto:elionsejdiu@hotmail.com");
+        }
+
+
+        private void websiteButton_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.youtube.com/watch?v=r2QlrxIkwjw");
+        }
+
+
+
+
+        private void textBoxZeit_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void listViewVonNach_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
+
+        private void Verbindung_Suchen_Enter(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void listBoxAbfahrtsplan_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                comboBoxStation.Text = Convert.ToString(listBoxAbfahrtsplan.SelectedItem);
+                listBoxAbfahrtsplan.Visible = true;
+                comboBoxStation.Focus();
+            }
+        }
     }
+}
+    
 
-
-
-
-
-
-
-    }
 

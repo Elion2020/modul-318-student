@@ -36,15 +36,21 @@
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.Verbindung_Suchen = new System.Windows.Forms.Button();
-            this.VerbindungenAnzeigen = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.StationenauswahlTab = new System.Windows.Forms.TabPage();
+            this.listBoxVonNach = new System.Windows.Forms.ListBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxZeit = new System.Windows.Forms.TextBox();
             this.AbfahrtsplanTab = new System.Windows.Forms.TabPage();
+            this.websiteButton = new System.Windows.Forms.Button();
+            this.BTN_Email = new System.Windows.Forms.Button();
+            this.txt_Email = new System.Windows.Forms.TextBox();
             this.listBoxAbfahrtsplan = new System.Windows.Forms.ListBox();
             this.StationsortAnzeigen = new System.Windows.Forms.Button();
             this.AbfahrtsplanAnzeigen = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxStation = new System.Windows.Forms.ComboBox();
+            this.webBrowserGM = new System.Windows.Forms.WebBrowser();
             this.tabControl1.SuspendLayout();
             this.StationenauswahlTab.SuspendLayout();
             this.AbfahrtsplanTab.SuspendLayout();
@@ -116,23 +122,15 @@
             // 
             // Verbindung_Suchen
             // 
-            this.Verbindung_Suchen.Location = new System.Drawing.Point(424, 128);
+            this.Verbindung_Suchen.Location = new System.Drawing.Point(616, 128);
             this.Verbindung_Suchen.Name = "Verbindung_Suchen";
             this.Verbindung_Suchen.Size = new System.Drawing.Size(192, 56);
             this.Verbindung_Suchen.TabIndex = 9;
             this.Verbindung_Suchen.Text = "Verbindung Suchen";
             this.Verbindung_Suchen.UseVisualStyleBackColor = true;
             this.Verbindung_Suchen.Click += new System.EventHandler(this.Verbindung_Suchen_Click);
-            // 
-            // VerbindungenAnzeigen
-            // 
-            this.VerbindungenAnzeigen.FormattingEnabled = true;
-            this.VerbindungenAnzeigen.ItemHeight = 16;
-            this.VerbindungenAnzeigen.Location = new System.Drawing.Point(104, 192);
-            this.VerbindungenAnzeigen.Name = "VerbindungenAnzeigen";
-            this.VerbindungenAnzeigen.Size = new System.Drawing.Size(632, 228);
-            this.VerbindungenAnzeigen.TabIndex = 10;
-            this.VerbindungenAnzeigen.SelectedIndexChanged += new System.EventHandler(this.VerbindungenAnzeigen_SelectedIndexChanged);
+            this.Verbindung_Suchen.Enter += new System.EventHandler(this.Verbindung_Suchen_Enter);
+            this.Verbindung_Suchen.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Verbindung_Suchen_KeyDown);
             // 
             // tabControl1
             // 
@@ -146,7 +144,9 @@
             // 
             // StationenauswahlTab
             // 
-            this.StationenauswahlTab.Controls.Add(this.VerbindungenAnzeigen);
+            this.StationenauswahlTab.Controls.Add(this.listBoxVonNach);
+            this.StationenauswahlTab.Controls.Add(this.label5);
+            this.StationenauswahlTab.Controls.Add(this.textBoxZeit);
             this.StationenauswahlTab.Controls.Add(this.dateTimePicker);
             this.StationenauswahlTab.Controls.Add(this.Verbindung_Suchen);
             this.StationenauswahlTab.Controls.Add(this.label1);
@@ -162,8 +162,37 @@
             this.StationenauswahlTab.Text = "Stationenauswahl";
             this.StationenauswahlTab.UseVisualStyleBackColor = true;
             // 
+            // listBoxVonNach
+            // 
+            this.listBoxVonNach.FormattingEnabled = true;
+            this.listBoxVonNach.ItemHeight = 16;
+            this.listBoxVonNach.Location = new System.Drawing.Point(128, 208);
+            this.listBoxVonNach.Name = "listBoxVonNach";
+            this.listBoxVonNach.Size = new System.Drawing.Size(672, 276);
+            this.listBoxVonNach.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(408, 136);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 17);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Zeit";
+            // 
+            // textBoxZeit
+            // 
+            this.textBoxZeit.Location = new System.Drawing.Point(408, 160);
+            this.textBoxZeit.Name = "textBoxZeit";
+            this.textBoxZeit.Size = new System.Drawing.Size(104, 22);
+            this.textBoxZeit.TabIndex = 11;
+            this.textBoxZeit.TextChanged += new System.EventHandler(this.textBoxZeit_TextChanged);
+            // 
             // AbfahrtsplanTab
             // 
+            this.AbfahrtsplanTab.Controls.Add(this.websiteButton);
+            this.AbfahrtsplanTab.Controls.Add(this.BTN_Email);
+            this.AbfahrtsplanTab.Controls.Add(this.txt_Email);
             this.AbfahrtsplanTab.Controls.Add(this.listBoxAbfahrtsplan);
             this.AbfahrtsplanTab.Controls.Add(this.StationsortAnzeigen);
             this.AbfahrtsplanTab.Controls.Add(this.AbfahrtsplanAnzeigen);
@@ -177,6 +206,33 @@
             this.AbfahrtsplanTab.Text = "Abfahrtsplan";
             this.AbfahrtsplanTab.UseVisualStyleBackColor = true;
             // 
+            // websiteButton
+            // 
+            this.websiteButton.Location = new System.Drawing.Point(712, 440);
+            this.websiteButton.Name = "websiteButton";
+            this.websiteButton.Size = new System.Drawing.Size(184, 48);
+            this.websiteButton.TabIndex = 7;
+            this.websiteButton.Text = "Unsere Website";
+            this.websiteButton.UseVisualStyleBackColor = true;
+            this.websiteButton.Click += new System.EventHandler(this.websiteButton_Click);
+            // 
+            // BTN_Email
+            // 
+            this.BTN_Email.Location = new System.Drawing.Point(640, 296);
+            this.BTN_Email.Name = "BTN_Email";
+            this.BTN_Email.Size = new System.Drawing.Size(232, 48);
+            this.BTN_Email.TabIndex = 6;
+            this.BTN_Email.Text = "E-Mail senden";
+            this.BTN_Email.UseVisualStyleBackColor = true;
+            this.BTN_Email.Click += new System.EventHandler(this.BTN_Email_Click);
+            // 
+            // txt_Email
+            // 
+            this.txt_Email.Location = new System.Drawing.Point(640, 264);
+            this.txt_Email.Name = "txt_Email";
+            this.txt_Email.Size = new System.Drawing.Size(232, 22);
+            this.txt_Email.TabIndex = 5;
+            // 
             // listBoxAbfahrtsplan
             // 
             this.listBoxAbfahrtsplan.FormattingEnabled = true;
@@ -185,6 +241,7 @@
             this.listBoxAbfahrtsplan.Name = "listBoxAbfahrtsplan";
             this.listBoxAbfahrtsplan.Size = new System.Drawing.Size(544, 276);
             this.listBoxAbfahrtsplan.TabIndex = 4;
+            this.listBoxAbfahrtsplan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxAbfahrtsplan_KeyDown);
             // 
             // StationsortAnzeigen
             // 
@@ -225,11 +282,21 @@
             this.comboBoxStation.DropDown += new System.EventHandler(this.comboBoxStation_DropDown);
             this.comboBoxStation.SelectedIndexChanged += new System.EventHandler(this.comboBoxStation_SelectedIndexChanged);
             // 
+            // webBrowserGM
+            // 
+            this.webBrowserGM.Location = new System.Drawing.Point(928, 0);
+            this.webBrowserGM.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowserGM.Name = "webBrowserGM";
+            this.webBrowserGM.Size = new System.Drawing.Size(856, 800);
+            this.webBrowserGM.TabIndex = 8;
+            // 
             // Form1
             // 
+            this.AcceptButton = this.Verbindung_Suchen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(915, 523);
+            this.ClientSize = new System.Drawing.Size(1776, 803);
+            this.Controls.Add(this.webBrowserGM);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button2);
             this.Name = "Form1";
@@ -252,7 +319,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Verbindung_Suchen;
-        private System.Windows.Forms.ListBox VerbindungenAnzeigen;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage StationenauswahlTab;
         private System.Windows.Forms.TabPage AbfahrtsplanTab;
@@ -261,6 +327,13 @@
         private System.Windows.Forms.Button AbfahrtsplanAnzeigen;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxStation;
+        private System.Windows.Forms.Button BTN_Email;
+        private System.Windows.Forms.TextBox txt_Email;
+        private System.Windows.Forms.Button websiteButton;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxZeit;
+        private System.Windows.Forms.ListBox listBoxVonNach;
+        private System.Windows.Forms.WebBrowser webBrowserGM;
     }
 }
 

@@ -10,7 +10,7 @@ namespace SwissTransport
         public Stations GetStations(string query)
         {
             query = System.Uri.EscapeDataString(query);
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/locations?query=" + query);
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/locations?query=" + query); //URL für Abfrage wird erstellt
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
@@ -49,19 +49,20 @@ namespace SwissTransport
             throw new NotImplementedException();
         }
 
-        public Connections GetConnections(string fromStation, string toStation)
+
+
+        public Connections GetConnections(string fromStation, string toStattion)
         {
-            fromStation = System.Uri.EscapeDataString(fromStation);
-            toStation = System.Uri.EscapeDataString(toStation);
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStation);
+            
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStattion);
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
             if (responseStream != null)
             {
                 var readToEnd = new StreamReader(responseStream).ReadToEnd();
-                var connections =
-                    JsonConvert.DeserializeObject<Connections>(readToEnd);
+            
+                var connections = JsonConvert.DeserializeObject<Connections>(readToEnd);
                 return connections;
             }
 
